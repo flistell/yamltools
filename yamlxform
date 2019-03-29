@@ -5,16 +5,20 @@ import fileinput
 
 
 def traverse(d, prefix):
+    # print("# %s => %s" % (type(d), prefix))
     if isinstance(d, dict):
         for k, v in d.items():
+            if '.' in k:
+                k = '"%s"' % k
             traverse(v, prefix + '.' + k)
-    if isinstance(d, str):
-        print(prefix + "=" + d)
-    if isinstance(d, list):
+    elif isinstance(d, list):
         i = 0
         for v in d:
             traverse(v, "%s[%d]" % (prefix, i))
             i += 1
+    else:
+    # if isinstance(d, str) or isinstance(d, int) or isinstance(d, bool):
+        print(prefix + "=" + str(d))
 
 
 f = ""
