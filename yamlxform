@@ -1,0 +1,28 @@
+#!/usr/bin/env python3
+
+import yaml
+import fileinput
+
+
+def traverse(d, prefix):
+    if isinstance(d, dict):
+        for k, v in d.items():
+            traverse(v, prefix + '.' + k)
+    if isinstance(d, str):
+        print(prefix + "=" + d)
+    if isinstance(d, list):
+        i = 0
+        for v in d:
+            traverse(v, "%s[%d]" % (prefix, i))
+            i += 1
+
+
+f = ""
+for l in fileinput.input():
+    f += l
+
+y_all = list(yaml.load_all(f))
+f = None
+for y in y_all:
+    print("---")
+    traverse(y, '')
